@@ -103,6 +103,7 @@ public class SokobanGame  implements UserInterface{
     }
 
     public void endgame(){
-
+        clearScene();
+        mainMenu();
     }
 }

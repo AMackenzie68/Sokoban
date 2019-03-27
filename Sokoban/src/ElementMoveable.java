@@ -3,6 +3,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public abstract class ElementMoveable extends Tile {
@@ -42,12 +43,15 @@ public abstract class ElementMoveable extends Tile {
                 x--;
                 break;
         }
-        if (getMapObject(x, y).getId().equals("Wall")) {
-            return true;
-        } else {
+        if (getMapObject(x,y) != null) {
+            if (getMapObject(x, y).getId().equals("Wall")) {
+                return true;
+            } else {
+                return false;
+            }
+        }else{
             return false;
         }
-
     }
 
     private boolean checkForCrate(int x, int y, int cardinalDirection) {
@@ -66,9 +70,14 @@ public abstract class ElementMoveable extends Tile {
                 x--;
                 break;
         }
-        if (getMapObject(x, y).getId().equals("Crate")) {
-            return true;
-        } else {
+        if(getMapObject(x,y) != null) {
+            System.out.println("The object at " + x + " , " + y + " is a: " + getMapObject(x,y).getId());
+            if (getMapObject(x, y).getId().equals("Crate")) {
+                return true;
+            } else {
+                return false;
+            }
+        }else{
             return false;
         }
     }
@@ -79,16 +88,16 @@ public abstract class ElementMoveable extends Tile {
         int crateMoveY = y;
         switch (cardinalDirection) {
             case 1:
-                crateMoveY = y - 2;
+                crateMoveY = y - 1;
                 break;
             case 2:
-                crateMoveX = x + 2;
+                crateMoveX = x + 1;
                 break;
             case 3:
-                crateMoveY = y + 2;
+                crateMoveY = y + 1;
                 break;
             case 4:
-                crateMoveX = x - 2;
+                crateMoveX = x - 1;
                 break;
             default:
                 crateMoveX = x;
@@ -96,11 +105,11 @@ public abstract class ElementMoveable extends Tile {
         }
 
         String newSpaceId = getMapObject(crateMoveX, crateMoveY).getId();
-
+        //System.out.println(newSpaceId);
         //Checks if the space holds a crate or a wall which would hold back the crate
-        if (newSpaceId == "Crate") {
+        if (newSpaceId.equals("Crate")) {
             return false;
-        } else if (newSpaceId == "Wall") {
+        } else if (newSpaceId.equals("Wall")) {
             return false;
         } else {
             return true;
@@ -127,23 +136,19 @@ public abstract class ElementMoveable extends Tile {
         int newCrateY = y;
 
         switch(cardinalDirection){
-            case 1: y--; newCrateY = y--;break;
-            case 2: x++; newCrateX = x++;break;
-            case 3: y++; newCrateY = y++;break;
-            case 4: x--; newCrateX = x--;break;
+            case 1: newCrateY--;break;
+            case 2: newCrateX++;break;
+            case 3: newCrateY++;break;
+            case 4: newCrateX--;break;
         }
 
         crateToMove = getMapObject(x,y);
         crateToMove.toFront();
-        if(checkCoveredDiamonds(x,y)){
-            GridPane.setConstraints(new Diamond(x,y).getTileShape(),x,y);
-        }else{
-            GridPane.setConstraints(new Ground(x,y).getTileShape(),x,y);
-        }
 
-        Rectangle tileInNewSpace = getMapObject(x,y);
+
+        Rectangle tileInNewSpace = getMapObject(newCrateX,newCrateY);
         assert tileInNewSpace != null;
-        if(tileInNewSpace.getId() == "Diamond"){
+        if(tileInNewSpace.getId().equals("Diamond")){
             int[] newDiamondCoords = new int[2];
             newDiamondCoords[0] = newCrateX;
             newDiamondCoords[1] = newCrateY;
@@ -151,10 +156,18 @@ public abstract class ElementMoveable extends Tile {
         }
 
         //Removes old tile, adds new tile, and ensures that the tile displays on top of the frame
+        System.out.println("The tile about to be removed is a " + tileInNewSpace.getId());
         mapPane.getChildren().remove(tileInNewSpace);
+        if(checkCoveredDiamonds(x,y)){
+            GridPane.setConstraints(new Diamond(x,y).getTileShape(),x,y);
+        }else{
+            GridPane.setConstraints(new Ground(x,y).getTileShape(),x,y);
+        }
         GridPane.setConstraints(crateToMove,newCrateX,newCrateY);
-        assert crateToMove != null;
+        //mapPane.getChildren().add(crateToMove);
         crateToMove.toFront();
+        //GridPane.setConstraints(new Ground(newCrateX,newCrateY).getTileShape(),newCrateX,newCrateY);
+
     }
 
 
@@ -162,24 +175,26 @@ public abstract class ElementMoveable extends Tile {
     //Checks if there is any tile that would block a WarehouseKeeper or Crate from moving
        //Also handles the collision between the player and a movable crate by calling the moveCrate method
         //Returns true if movement is possible, otherwise returns false.
+        System.out.println(getMapObject(x,y).getId());
         if(checkWalls(x,y,cardinalDirection)){
             System.out.println("Player cannot move in direction " + cardinalDirection);
             return false;
         }
 
         if(checkForCrate(x,y,cardinalDirection)){
-            int crateX;
-            int crateY;
+            int crateX=x;
+            int crateY=y;
 
             switch(cardinalDirection){
-                case 1: crateY = y--; crateX = x;break;
-                case 2: crateY = y; crateX = x++;break;
-                case 3: crateY = y++; crateX = x;break;
-                case 4: crateY = y; crateX = x--;break;
+                case 1: crateY--;break;
+                case 2: crateX++;break;
+                case 3: crateY++;break;
+                case 4: crateX--;break;
                 default:crateX = x; crateY = y;
             }
 
             if(checkCrateDirection(crateX,crateY,cardinalDirection)){
+                System.out.println("Crate can move");
                 moveCrate(crateX,crateY,cardinalDirection);
                 getMapObject(crateX,crateY).toFront();
                 return true;

@@ -1,7 +1,8 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+import javafx.scene.Node;
 
-public class GameTracker {
+import java.util.ArrayList;
+
+public class GameTracker implements UserInterface{
 
     private ArrayList<Tile> diamonds = new ArrayList<>();
     private ArrayList<Tile> crates = new ArrayList<>();
@@ -17,28 +18,14 @@ public class GameTracker {
         crates.clear();
     }
 
-    public void checkCovered(){
-        Boolean[] coveredDiamonds = new Boolean[diamonds.size()];
-        int counter = 0;
-        for (Tile tempDiamond : diamonds){
+    public boolean checkWinConditions(){
 
-            int diamondX = tempDiamond.getxAxis();
-            int diamondY = tempDiamond.getyAxis();
-            for (Tile tempCrate : crates){
-                int crateX = tempCrate.getxAxis();
-                int crateY = tempCrate.getyAxis();
-                if (crateX == diamondX && crateY == diamondY){
-                    coveredDiamonds[counter] = true;
-                }
+        for(Node Tile : mapPane.getChildren()){
+            if (Tile.getId().equals("Diamond")){
+                return false;
             }
-
-            if(Arrays.asList(coveredDiamonds).contains(false)){
-                setGameResult(true);
-            }else{
-                setGameResult(false);
-            }
-
         }
+        return true;
 
     }
 
@@ -55,7 +42,7 @@ public class GameTracker {
     }
 
     public boolean getGameResult(){
-        checkCovered();
+        gameResult = checkWinConditions();
         return gameResult;
     }
 
