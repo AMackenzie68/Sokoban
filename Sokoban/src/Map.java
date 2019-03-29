@@ -31,6 +31,7 @@ public class Map implements UserInterface{
             case 3: file = "src/SokobanLevels/level3.txt"; break;
             case 4: file = "src/SokobanLevels/level4.txt"; break;
             case 5: file = "src/SokobanLevels/level5.txt"; break;
+            case 6: file = "src/SokobanLevels/FileNotFoundTest.txt"; break;
             default: file = "src/SokobanLevels/level1.txt";
         }
 
@@ -50,10 +51,14 @@ public class Map implements UserInterface{
             System.out.println("File not found at: " + file);
             System.out.println("Check File System");
             e.printStackTrace();
+            AlertBox.display("Level File Not Found","The level files could not be found, please re-download the program and try again" );
+            System.exit(1);
         } catch (IOException e) {
             System.out.println("IO Exception");
             System.out.println("Check Files");
             e.printStackTrace();
+            AlertBox.display("Level File Not Found","The level files could not be accessed, please re-download the program and try again" );
+            System.exit(2);
         }
         createMap();
     }

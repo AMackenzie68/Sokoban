@@ -1,3 +1,4 @@
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -12,6 +13,9 @@ public interface UserInterface {
 
     //Main Grid for the game to function with
     GridPane mapPane = new GridPane();
+
+    //Borderpane for a neater layout
+    BorderPane layoutPane = new BorderPane();
 
 
     //Tracker to check if win conditions are satisfied

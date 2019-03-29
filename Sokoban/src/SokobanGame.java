@@ -37,7 +37,7 @@ public class SokobanGame  implements UserInterface{
         GridPane.setConstraints(menuLabel,0,0);
         mapPane.getChildren().add(menuLabel);
 
-        for(int i = 1; i<6; i++) {
+        for(int i = 1; i<7; i++) {
             Button levelButton = new Button("Level " + i);
 
            int levelNumber = i;
@@ -103,7 +103,17 @@ public class SokobanGame  implements UserInterface{
     }
 
     public void endgame(){
+        if(!gameComplete()){
+
+            System.exit(0);
+
+        }
         clearScene();
         mainMenu();
+    }
+
+    public boolean gameComplete(){
+        System.out.println("game complete");
+        return (ConfirmBox.display("Congratulations!","You beat level " + currentMap.getLevel() + ".\nPlay again?"));
     }
 }

@@ -18,7 +18,8 @@ public class SokobanMain extends Application implements UserInterface {
         //Stage mainStage = new Stage();
         mainStage.setTitle("Sokoban - WarehouseKeeper");
         mainStage.getIcons().add(new Image("SokobanImages/WarehouseKeeper.png"));
-        mainStage.setScene(new Scene(UserInterface.mapPane));
+        layoutPane.setCenter(mapPane);
+        mainStage.setScene(new Scene(layoutPane));
         mainStage.show();
     }
 
