@@ -24,25 +24,25 @@ public class WarehouseKeeper extends ElementMoveable {
         int warehouseKeeperY = getyAxis();
 
         if(keypress.getCode() == KeyCode.UP){
-            if(movementChecker(warehouseKeeperX,warehouseKeeperY,1)){
+            if(movementChecker(warehouseKeeperX,warehouseKeeperY,CardinalDirection.NORTH)){
                 warehouseKeeperY--;
             }
         }
 
         if(keypress.getCode() == KeyCode.RIGHT){
-            if(movementChecker(warehouseKeeperX,warehouseKeeperY,2)){
+            if(movementChecker(warehouseKeeperX,warehouseKeeperY,CardinalDirection.EAST)){
                 warehouseKeeperX++;
             }
         }
 
         if(keypress.getCode() == KeyCode.DOWN){
-            if(movementChecker(warehouseKeeperX,warehouseKeeperY,3)){
+            if(movementChecker(warehouseKeeperX,warehouseKeeperY,CardinalDirection.SOUTH)){
                 warehouseKeeperY++;
             }
         }
 
         if(keypress.getCode() == KeyCode.LEFT){
-            if(movementChecker(warehouseKeeperX,warehouseKeeperY,4)){
+            if(movementChecker(warehouseKeeperX,warehouseKeeperY,CardinalDirection.WEST)){
                 warehouseKeeperX--;
             }
         }

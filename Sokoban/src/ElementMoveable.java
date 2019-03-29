@@ -3,7 +3,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 public abstract class ElementMoveable extends Tile {
@@ -26,20 +25,20 @@ public abstract class ElementMoveable extends Tile {
 
     }
 
-    private boolean checkWalls(int x, int y, int cardinalDirection) {
+    private boolean checkWalls(int x, int y, CardinalDirection cardinalDirection) {
         //Checks if the object is a wall, and if it is, returns that a wall is there (true)
         //Otherwise returns false
         switch (cardinalDirection) {
-            case 1:
+            case NORTH:
                 y--;
                 break;
-            case 2:
+            case EAST:
                 x++;
                 break;
-            case 3:
+            case SOUTH:
                 y++;
                 break;
-            case 4:
+            case WEST:
                 x--;
                 break;
         }
@@ -54,19 +53,19 @@ public abstract class ElementMoveable extends Tile {
         }
     }
 
-    private boolean checkForCrate(int x, int y, int cardinalDirection) {
+    private boolean checkForCrate(int x, int y, CardinalDirection cardinalDirection) {
         //Similar function to checkWalls, but checks for crates specifically
         switch (cardinalDirection) {
-            case 1:
+            case NORTH:
                 y--;
                 break;
-            case 2:
+            case EAST:
                 x++;
                 break;
-            case 3:
+            case SOUTH:
                 y++;
                 break;
-            case 4:
+            case WEST:
                 x--;
                 break;
         }
@@ -82,21 +81,21 @@ public abstract class ElementMoveable extends Tile {
         }
     }
 
-    private boolean checkCrateDirection(int x, int y, int cardinalDirection) {
+    private boolean checkCrateDirection(int x, int y, CardinalDirection cardinalDirection) {
         //Checks if a crate in the direction supplied from the coordinates can move in that direction
         int crateMoveX = x;
         int crateMoveY = y;
         switch (cardinalDirection) {
-            case 1:
+            case NORTH:
                 crateMoveY = y - 1;
                 break;
-            case 2:
+            case EAST:
                 crateMoveX = x + 1;
                 break;
-            case 3:
+            case SOUTH:
                 crateMoveY = y + 1;
                 break;
-            case 4:
+            case WEST:
                 crateMoveX = x - 1;
                 break;
             default:
@@ -128,7 +127,7 @@ public abstract class ElementMoveable extends Tile {
         return false;
     }
 
-    private void moveCrate(int x, int y, int cardinalDirection){
+    private void moveCrate(int x, int y, CardinalDirection cardinalDirection){
         //Moves a crate found one square away from the coordinates(x,y)given, in the direction given.
         Rectangle crateToMove;
 
@@ -136,10 +135,10 @@ public abstract class ElementMoveable extends Tile {
         int newCrateY = y;
 
         switch(cardinalDirection){
-            case 1: newCrateY--;break;
-            case 2: newCrateX++;break;
-            case 3: newCrateY++;break;
-            case 4: newCrateX--;break;
+            case NORTH: newCrateY--;break;
+            case EAST: newCrateX++;break;
+            case SOUTH: newCrateY++;break;
+            case WEST: newCrateX--;break;
         }
 
         crateToMove = getMapObject(x,y);
@@ -171,7 +170,7 @@ public abstract class ElementMoveable extends Tile {
     }
 
 
-    public boolean movementChecker(int x, int y, int cardinalDirection){
+    public boolean movementChecker(int x, int y, CardinalDirection cardinalDirection){
     //Checks if there is any tile that would block a WarehouseKeeper or Crate from moving
        //Also handles the collision between the player and a movable crate by calling the moveCrate method
         //Returns true if movement is possible, otherwise returns false.
@@ -186,10 +185,10 @@ public abstract class ElementMoveable extends Tile {
             int crateY=y;
 
             switch(cardinalDirection){
-                case 1: crateY--;break;
-                case 2: crateX++;break;
-                case 3: crateY++;break;
-                case 4: crateX--;break;
+                case NORTH: crateY--;break;
+                case EAST: crateX++;break;
+                case SOUTH: crateY++;break;
+                case WEST: crateX--;break;
                 default:crateX = x; crateY = y;
             }
 
